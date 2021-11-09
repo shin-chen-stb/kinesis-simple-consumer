@@ -1,14 +1,16 @@
 from boto import kinesis
 import time
+import sys
 
-id='AKIARLZ6R52JFKELZTQN'
-key='LI5sQlJK/F+VGA+zyZJ4QAgA7vZSzviWDpLpyph4'
+id=sys.argv[0]
+key=sys.argv[1]
+streamName = sys.argv[2]
 auth = {"aws_access_key_id":id, "aws_secret_access_key":key}
 connection = kinesis.connect_to_region('ap-northeast-1',**auth)
 
 
 shard_ids = []
-response = connection.describe_stream('testcdc2')
+response = connection.describe_stream(streamName)
 stream_name = response['StreamDescription']['StreamName']                   
 print(response)
 for shard_id in response['StreamDescription']['Shards']:
